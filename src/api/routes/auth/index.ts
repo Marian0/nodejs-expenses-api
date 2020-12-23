@@ -4,6 +4,7 @@ import { Container } from 'typedi';
 import { User } from '../../../models/User';
 import AuthService from '../../../services/auth';
 import middlewares from '../../middlewares';
+import { uniqueEmail } from '../../validators/uniqueEmail.validator';
 
 const route = Router();
 
@@ -26,7 +27,8 @@ export default app => {
                 email: Joi.string()
                     .trim()
                     .email()
-                    .required(),
+                    .required()
+                    .external(uniqueEmail),
                 password: Joi.string()
                     .min(8)
                     .max(30)

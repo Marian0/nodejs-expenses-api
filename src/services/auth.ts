@@ -1,4 +1,5 @@
 import * as argon2 from 'argon2';
+import { CelebrateError } from 'celebrate';
 import { randomBytes } from 'crypto';
 import * as jwt from 'jsonwebtoken';
 import { Service } from 'typedi';
@@ -18,19 +19,19 @@ type TokenPayload = {
 export default class AuthService {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
-  public async SignUp(inputUser: User): Promise<{ user: User; auth: TokenPayload }> {
+  public async SignUp({email, password, ...rest}: User): Promise<{ user: User; auth: TokenPayload }> {
     try {
-
-      //check if current email already exists in database
-
+      
+      //Generate salt
       const salt = randomBytes(32);
 
       /**
        * Hash password first
        */
-      const hashedPassword = await argon2.hash(inputUser.password, { salt });
+      const hashedPassword = await argon2.hash(password, { salt });
       const userRecord = await this.userRepository.save({
-        ...inputUser,
+        email,
+        ...rest,
         salt: salt.toString('hex'),
         password: hashedPassword,
       });

@@ -14,4 +14,8 @@ export default class UserService {
   public async findOne(id?: string, options?: FindOneOptions<User>): Promise<User> {
     return await this.userRepository.findOne(id, options);
   }
+
+  public async findOneByEmail(email: string): Promise<User> {
+    return await this.userRepository.findOne({ email });
+  }
 }

@@ -1,0 +1,42 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+version: '3'
+
+services:
+
+  # Postgres DB Service
+  postgres:
+    image: 'postgres'
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      # Variables taken from .env
+      - 'POSTGRES_DB=${POSTGRES_DB}'
+      - 'POSTGRES_USER=${POSTGRES_USER}'
+      - 'POSTGRES_PASSWORD=${POSTGRES_PASSWORD}'
+    volumes:
+      - expenses-api-postgres-data:/var/lib/postgresql/data
+    networks:
+      - expenses-api-network
+
+  # Adminer
+  adminer:
+    image: adminer
+    restart: always
+    environment:
+      - ADMINER_DEFAULT_DB_DRIVER=pgsql
+      - 'ADMINER_DEFAULT_DB_HOST=postgres'
+      - 'ADMINER_DEFAULT_DB_NAME=${POSTGRES_DB}'
+    depends_on:
+      - postgres
+    ports:
+      - 8981:8080
+    networks:
+      - expenses-api-network
+
+networks:
+  expenses-api-network: 
+
+volumes:
+  expenses-api-postgres-data:
+    

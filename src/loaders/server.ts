@@ -1,10 +1,9 @@
 import bodyParser from 'body-parser';
-import { errors, isCelebrateError } from 'celebrate';
+import { errors } from 'celebrate';
 import cors from 'cors';
 import * as express from 'express';
 import helmet from 'helmet';
-import Joi from 'joi';
-import { ValidationError } from 'joi';
+import errorHandlers from '../api/middlewares/errorHandler';
 import routes from '../api/routes';
 
 export default (app: express.Application) => {
@@ -13,6 +12,8 @@ export default (app: express.Application) => {
   app.use(helmet());
   app.use(bodyParser.json());
   app.use(errors());
-
   app.use('/api', routes);
+
+  //Add error handlers middleware
+  errorHandlers(app);
 };

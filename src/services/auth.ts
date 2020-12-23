@@ -8,12 +8,21 @@ import config from '../config';
 import { Exception } from '../Exception';
 import { User } from '../models/User';
 
+type TokenPayload = {
+  token: string
+  refreshToken: string
+  expiration: number
+ }
+
 @Service()
 export default class AuthService {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
-  public async SignUp(inputUser: User): Promise<{ user: User; token: string }> {
+  public async SignUp(inputUser: User): Promise<{ user: User; auth: TokenPayload }> {
     try {
+
+      //check if current email already exists in database
+
       const salt = randomBytes(32);
 
       /**
@@ -26,7 +35,7 @@ export default class AuthService {
         password: hashedPassword,
       });
 
-      const token = this.generateToken(userRecord);
+      const auth = this.generateToken(userRecord);
 
       if (!userRecord) {
         throw new Error('User cannot be created');
@@ -42,7 +51,7 @@ export default class AuthService {
       const user = userRecord;
       Reflect.deleteProperty(user, 'password');
       Reflect.deleteProperty(user, 'salt');
-      return { user, token };
+      return { user, auth };
     } catch (error) {
       if (error.name === 'MongoError' && error.code === 11000) {
         // Duplicate username
@@ -53,7 +62,7 @@ export default class AuthService {
     }
   }
 
-  public async SignIn(email: string, password: string): Promise<{ user: User; token: string }> {
+  public async SignIn(email: string, password: string): Promise<{ user: User; auth: TokenPayload }> {
     const record = await this.userRepository.findOne({ email });
 
     if (!record) {
@@ -71,25 +80,44 @@ export default class AuthService {
       /**
        * Return user and token
        */
-      return { user, token };
+      return { user, auth: token };
     } else {
       throw new Error('Invalid Password');
     }
   }
 
-  private generateToken(user: User): string {
+  private generateToken(user: User): TokenPayload {
     const today = new Date();
     const exp = new Date(today);
     exp.setDate(today.getDate() + 60);
 
-    return jwt.sign(
+    const expiration = Math.floor(exp.getTime() / 1000)
+
+    const token = jwt.sign(
       {
         id: user.id, // We are gonna use this in the middleware 'isAuth'
         role: user.role,
         name: user.name,
-        exp: exp.getTime() / 1000,
+        exp: expiration,
       },
       config.jwtSecret,
-    );
+    )
+
+    const refreshToken = jwt.sign(
+      {
+        id: user.id, // We are gonna use this in the middleware 'isAuth'
+        role: user.role,
+        name: user.name,
+        exp: expiration * 2,
+      },
+      config.jwtSecret,
+    )
+
+    return { 
+      token,
+      refreshToken,
+      expiration
+    }
   }
+
 }

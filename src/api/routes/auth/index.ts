@@ -38,8 +38,8 @@ export default app => {
         async (req: Request, res: Response, next: NextFunction) => {
             try {
                 const authServiceInstance = Container.get(AuthService);
-                const { user, token } = await authServiceInstance.SignUp(req.body as User);
-                return res.json({ user, token }).status(201);
+                const response = await authServiceInstance.SignUp(req.body as User);
+                return res.json(response).status(201);
             } catch (e) {
                 console.log(' error ', e);
                 return next(e);
@@ -65,8 +65,8 @@ export default app => {
             try {
                 const { email, password } = req.body;
                 const authServiceInstance = Container.get(AuthService);
-                const { user, token } = await authServiceInstance.SignIn(email, password);
-                return res.json({ user, token }).status(200);
+                const response = await authServiceInstance.SignIn(email, password);
+                return res.json(response).status(200);
             } catch (e) {
                 console.log(' error ', e);
                 return next(e);

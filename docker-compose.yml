@@ -3,6 +3,20 @@ version: '3'
 
 services:
 
+  app:
+    build: .
+    ports:
+      - '${APP_PORT}:${APP_PORT}'
+    volumes:
+      - "./:/src/"
+      - /src/node_modules
+    command: "yarn start"
+    depends_on:
+      - postgres
+    networks:
+      - expenses-api-network
+
+
   # Postgres DB Service
   postgres:
     image: 'postgres'

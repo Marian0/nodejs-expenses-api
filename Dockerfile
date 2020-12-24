@@ -1,14 +1,13 @@
-FROM node:10
+FROM node:14
 
 # Create work directory
-WORKDIR /usr/src/app
+WORKDIR /src
 
 # Install runtime dependencies
-RUN npm install yarn -g
 RUN npm install typescript -g
 
 # Copy app source to work directory
-COPY . /usr/src/app
+COPY . /src
 
 # Install app dependencies
 RUN yarn install
@@ -17,4 +16,4 @@ RUN yarn install
 RUN yarn build
 
 EXPOSE 3000
-CMD node dist/main.js
+CMD ["node", "dist/main.js"]

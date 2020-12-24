@@ -1,10 +1,10 @@
 import { celebrate, Joi } from 'celebrate';
 import { NextFunction, Request, Response, Router } from 'express';
 import { Container } from 'typedi';
-import { User } from '../../../models/User';
-import AuthService from '../../../services/auth';
-import middlewares from '../../middlewares';
-import { uniqueEmail } from '../../validators/uniqueEmail.validator';
+import { User } from '../../models/user.model';
+import AuthService from '../../services/auth.service';
+import middlewares from '../middlewares';
+import { uniqueEmail } from '../validators/uniqueEmail.validator';
 
 const route = Router();
 

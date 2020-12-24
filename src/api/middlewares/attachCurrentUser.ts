@@ -1,5 +1,5 @@
 import { Container } from 'typedi';
-import UserService from '../../services/users';
+import UserService from '../../services/user.service';
 
 /**
  * Attach user to req.user

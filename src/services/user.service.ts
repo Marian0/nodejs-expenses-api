@@ -1,7 +1,7 @@
 import { Service } from 'typedi';
 import { FindOneOptions, Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import { User } from '../models/User';
+import { User } from '../models/user.model';
 
 @Service()
 export default class UserService {

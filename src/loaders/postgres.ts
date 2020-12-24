@@ -2,7 +2,7 @@ import Container from 'typedi';
 import { Connection, createConnection, useContainer } from 'typeorm';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import config from '../config';
-import { User } from '../models/User';
+import { User } from '../models/user.model';
 
 export default async (): Promise<Connection> => {
   // read connection options from ormconfig file (or ENV variables)

@@ -1,8 +1,13 @@
-import { CustomHelpers, ValidationError } from "joi";
+import { ValidationError } from "joi";
 import Container from "typedi";
-import UserService from "../../services/users";
+import UserService from "../../services/user.service";
 
-export const uniqueEmail = async (value: string, helpers: CustomHelpers) => {
+/**
+ * Validator for checking in database if the email is already taken
+ * @param value 
+ */
+export const uniqueEmail = async (value: any) => {
+  //Get user service via DI
   const userServiceInstance = Container.get(UserService);
 
   //check if current email already exists in database

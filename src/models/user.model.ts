@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { lowercase } from './ValueTransformers';
+import { lowercase } from '../utils/transformers';
 
 export enum Role {
   User = 'USER',

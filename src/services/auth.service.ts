@@ -19,7 +19,7 @@ type TokenPayload = {
 export default class AuthService {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
-  public async SignUp({email, password, ...rest}: User): Promise<{ user: User; auth: TokenPayload }> {
+  public async SignUp({ email, password, ...rest }: User): Promise<{ user: User; auth: TokenPayload }> {
     try {
       
       //Generate salt
@@ -54,10 +54,6 @@ export default class AuthService {
       Reflect.deleteProperty(user, 'salt');
       return { user, auth };
     } catch (error) {
-      if (error.name === 'MongoError' && error.code === 11000) {
-        // Duplicate username
-        throw new Error('User already exist!');
-      }
       console.log(error);
       throw error;
     }

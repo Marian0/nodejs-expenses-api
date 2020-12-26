@@ -1,3 +1,4 @@
+import jwt, { UnauthorizedError } from 'express-jwt';
 import { Container } from 'typedi';
 import UserService from '../../services/user.service';
 
@@ -12,7 +13,7 @@ const attachCurrentUser = async (req, res, next) => {
     const userServiceInstance = Container.get(UserService);
     const userRecord = await userServiceInstance.findOne(req.token.id);
     if (!userRecord) {
-      return res.sendStatus(401);
+      throw new UnauthorizedError("invalid_token", { message: "Invalid token" })
     }
     const currentUser = userRecord;
     Reflect.deleteProperty(currentUser, 'password');

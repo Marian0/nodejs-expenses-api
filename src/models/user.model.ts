@@ -3,17 +3,19 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { lowercase } from '../utils/transformers.db';
+import { Expense } from './expense.model';
 
 export enum Role {
   User = 'USER',
   Admin = 'ADMIN',
 }
 
-@Entity()
+@Entity({ name: "users" })
 export class User {
   @PrimaryGeneratedColumn()
   public id: number;
@@ -50,6 +52,9 @@ export class User {
   @Column()
   @UpdateDateColumn()
   public updatedAt: Date;
+
+  @OneToMany(() => Expense, expense => expense.user)
+  expenses: Expense[];
 
   // @AfterLoad()
   // public deletePropertis(): void {

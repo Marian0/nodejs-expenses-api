@@ -16,7 +16,9 @@ export default async (): Promise<Connection> => {
     database: config.database.database,
     synchronize: true,
     logging: true,
-    entities: [User],
+    entities: [
+      "src/models/*.model.ts"
+    ],
   };
 
   // typedi + typeorm

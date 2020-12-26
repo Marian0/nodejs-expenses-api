@@ -40,4 +40,19 @@ export default (app: Router) => {
       return res.json(response).status(201);
     },
   );
+
+  /**
+   * GET api/expenses
+   * Get expenses from current user
+   */
+  route.get(
+    '/',
+    middlewares.isAuth,
+    middlewares.attachCurrentUser,
+    async (req: Request, res: Response) => {
+      const expenseService = Container.get(ExpenseService);
+      const response = await expenseService.getExpenses(req.currentUser as User);
+      return res.json(response).status(201);
+    },
+  );
 };

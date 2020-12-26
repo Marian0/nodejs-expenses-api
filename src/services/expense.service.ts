@@ -28,4 +28,34 @@ export default class ExpenseService {
       throw error;
     }
   }
+
+  /**
+   * Gets expenses from a given user
+   * @param owner <Optional>
+   */
+  public async getExpenses(owner?: User): Promise<{ expenses: Expense[] }> {
+    try {
+
+      let conditions = {}
+
+      if (owner) {
+        conditions['where'] = {
+          user: owner
+        }
+      } else {
+        //no owner, include user Relation
+        //@todo: Implemet DTO to avoid sending password/salts
+        conditions["relations"] = ["user"]
+      }
+
+      const expenses = await this.expenseRepository.find(conditions);
+
+      return { expenses };
+
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
 }

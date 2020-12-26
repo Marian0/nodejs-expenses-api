@@ -32,6 +32,7 @@ export class User {
   public email: string;
 
   @Column({
+    // select: false,
     nullable: false,
   })
   public password: string;

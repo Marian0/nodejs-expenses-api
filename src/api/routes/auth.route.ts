@@ -82,7 +82,9 @@ export default app => {
         async (req: Request, res: Response, next: NextFunction) => {
             try {
                 // @TODO AuthService.Logout(req.user) for doing some other stuffff
-                return res.status(200).end();
+                return res.json({
+                    message: "Logged out successfully"
+                }).status(200).end();
             } catch (e) {
                 console.log(' error ', e);
                 return next(e);

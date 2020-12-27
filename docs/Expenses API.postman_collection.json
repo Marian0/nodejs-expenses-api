@@ -1,0 +1,188 @@
+{
+	"info": {
+		"_postman_id": "69cee83e-c6c0-4231-be3b-63c87821e2d7",
+		"name": "Expenses API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST auth/signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Mariano Santa Fe\",\n    \"email\": \"marian@zo.com\",\n    \"password\": \"marian@zo.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/auth/signup",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"signup"
+					]
+				},
+				"description": "Registers a new user"
+			},
+			"response": []
+		},
+		{
+			"name": "POST auth/signin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"marian@zo.com\",\n    \"password\": \"marian@zo.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/auth/signin",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"signin"
+					]
+				},
+				"description": "Registers a new user"
+			},
+			"response": []
+		},
+		{
+			"name": "POST auth/logout",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearer}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"marian@zo.com\",\n    \"password\": \"marian@zo.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/auth/logout",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"logout"
+					]
+				},
+				"description": "Registers a new user"
+			},
+			"response": []
+		},
+		{
+			"name": "GET users/me",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearer}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/api/users/me",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"me"
+					]
+				},
+				"description": "Registers a new user"
+			},
+			"response": []
+		},
+		{
+			"name": "GET expenses",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{bearer}}"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/api/expenses",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"expenses"
+					]
+				},
+				"description": "Registers a new user"
+			},
+			"response": []
+		},
+		{
+			"name": "POST expenses",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{bearer}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"detail\": \"Foo Bar Restaurant\",\n    \"date\":  \"2020-12-26\",\n    \"amount\": 1560\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/expenses",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"expenses"
+					]
+				},
+				"description": "Registers a new user"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -4,6 +4,7 @@ import {
   DeleteDateColumn,
   Entity,
   Index,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -12,8 +13,8 @@ import { User } from './user.model';
 
 @Entity({ name: "expenses" })
 export class Expense {
-  @PrimaryGeneratedColumn()
-  public id: number;
+  @PrimaryGeneratedColumn("uuid")
+  uuid: string;
 
   @Column({ type: 'date' })
   date: Date;
@@ -37,6 +38,7 @@ export class Expense {
   deletedAt?: Date;
 
   @ManyToOne(() => User, user => user.expenses)
+  @JoinColumn({ name: "userRef" })
   @Index()
   user: User;
 

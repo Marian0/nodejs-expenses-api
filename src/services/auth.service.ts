@@ -1,5 +1,4 @@
 import * as argon2 from 'argon2';
-import { CelebrateError } from 'celebrate';
 import { randomBytes } from 'crypto';
 import * as jwt from 'jsonwebtoken';
 import { Service } from 'typedi';
@@ -29,29 +28,21 @@ export default class AuthService {
        * Hash password first
        */
       const hashedPassword = await argon2.hash(password, { salt });
-      const userRecord = await this.userRepository.save({
+      const user = await this.userRepository.save({
         email,
         ...rest,
         salt: salt.toString('hex'),
         password: hashedPassword,
       });
 
-      const auth = this.generateToken(userRecord);
+      const auth = this.generateToken(user);
 
-      if (!userRecord) {
+      if (!user) {
         throw new Error('User cannot be created');
       }
 
-      //   await this.mailer.SendWelcomeEmail(userRecord);
+      //   await this.mailer.SendWelcomeEmail(user);
 
-      /**
-       * @TODO This is not the best way to deal with this
-       * There should exist a 'Mapper' layer
-       * that transforms data from layer to layer
-       */
-      const user = userRecord;
-      Reflect.deleteProperty(user, 'password');
-      Reflect.deleteProperty(user, 'salt');
       return { user, auth };
     } catch (error) {
       console.log(error);
@@ -60,27 +51,22 @@ export default class AuthService {
   }
 
   public async SignIn(email: string, password: string): Promise<{ user: User; auth: TokenPayload }> {
-    const record = await this.userRepository.findOne({ email });
+    const user = await this.userRepository.findOne({ email });
 
-    if (!record) {
+    if (!user) {
       throw new Exception('User not found!', 404);
     }
-    /**
-     * We use verify from argon2 to prevent 'timing based' attacks
-     */
-    const validPassword = await argon2.verify(record.password, password);
-    if (validPassword) {
-      const token = this.generateToken(record);
-      const user = record;
-      Reflect.deleteProperty(user, 'password');
-      Reflect.deleteProperty(user, 'salt');
-      /**
-       * Return user and token
-       */
-      return { user, auth: token };
-    } else {
+
+    //Verify from argon2 to prevent 'timing based' attacks
+    const validPassword = await argon2.verify(user.password, password);
+    if (!validPassword) {
       throw new Error('Invalid Password');
     }
+
+    return {
+      user,
+      auth: this.generateToken(user)
+    };
   }
 
   private generateToken(user: User): TokenPayload {
@@ -92,7 +78,7 @@ export default class AuthService {
 
     const token = jwt.sign(
       {
-        id: user.id, // We are gonna use this in the middleware 'isAuth'
+        id: user.uuid, // We are gonna use this in the middleware 'isAuth'
         role: user.role,
         name: user.name,
         exp: expiration,
@@ -102,7 +88,7 @@ export default class AuthService {
 
     const refreshToken = jwt.sign(
       {
-        id: user.id, // We are gonna use this in the middleware 'isAuth'
+        id: user.uuid, // We are gonna use this in the middleware 'isAuth'
         role: user.role,
         name: user.name,
         exp: expiration * 2,

@@ -4,6 +4,7 @@ import { Container } from 'typedi';
 import { User } from '../../models/user.model';
 import AuthService from '../../services/auth.service';
 import middlewares from '../middlewares';
+import { userResource } from '../resources/user.resources';
 import { uniqueEmail } from '../validators/uniqueEmail.validator';
 
 const route = Router();
@@ -16,6 +17,9 @@ const route = Router();
 export default app => {
     app.use('/auth', route);
 
+    /**
+     * POST auth/signup
+     */
     route.post(
         '/signup',
         celebrate({
@@ -40,8 +44,11 @@ export default app => {
         async (req: Request, res: Response, next: NextFunction) => {
             try {
                 const authServiceInstance = Container.get(AuthService);
-                const response = await authServiceInstance.SignUp(req.body as User);
-                return res.json(response).status(201);
+                const { user, auth } = await authServiceInstance.SignUp(req.body as User);
+                return res.json({
+                    user: userResource(user),
+                    auth
+                }).status(201);
             } catch (e) {
                 console.log(' error ', e);
                 return next(e);
@@ -49,6 +56,9 @@ export default app => {
         },
     );
 
+    /**
+     * POST auth/signin
+     */
     route.post(
         '/signin',
         celebrate({
@@ -67,8 +77,11 @@ export default app => {
             try {
                 const { email, password } = req.body;
                 const authServiceInstance = Container.get(AuthService);
-                const response = await authServiceInstance.SignIn(email, password);
-                return res.json(response).status(200);
+                const { user, auth } = await authServiceInstance.SignIn(email, password);
+                return res.json({
+                    user: userResource(user),
+                    auth
+                }).status(200);
             } catch (e) {
                 console.log(' error ', e);
                 return next(e);
@@ -76,6 +89,9 @@ export default app => {
         },
     );
 
+    /**
+     * POST auth/logout
+     */
     route.post(
         '/logout',
         middlewares.isAuth,

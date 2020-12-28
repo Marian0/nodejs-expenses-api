@@ -2,8 +2,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Generated,
   Index,
   OneToMany,
+  PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -17,15 +19,14 @@ export enum Role {
 
 @Entity({ name: "users" })
 export class User {
-  @PrimaryGeneratedColumn()
-  public id: number;
+  @PrimaryGeneratedColumn("uuid")
+  uuid: string;
 
   @Column()
   public name: string;
 
   @Index({ unique: true })
   @Column({
-    unique: true,
     nullable: false,
     transformer: [lowercase],
   })

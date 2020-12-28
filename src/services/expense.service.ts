@@ -1,6 +1,7 @@
 import { Service } from 'typedi';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
+import { expenseResource } from '../api/resources/expense.resources';
 import { Expense } from '../models/expense.model';
 import { User } from '../models/user.model';
 
@@ -21,7 +22,7 @@ export default class ExpenseService {
         user: owner
       });
 
-      return { expense };
+      return { expense: expenseResource(expense) };
 
     } catch (error) {
       console.log(error);
@@ -50,7 +51,7 @@ export default class ExpenseService {
 
       const expenses = await this.expenseRepository.find(conditions);
 
-      return { expenses };
+      return { expenses: expenses.map(expense => expenseResource(expense)) };
 
     } catch (error) {
       console.log(error);

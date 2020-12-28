@@ -6,6 +6,7 @@ import { Expense } from '../../models/expense.model';
 import { User } from '../../models/user.model';
 import ExpenseService from '../../services/expense.service';
 import middlewares from '../middlewares';
+import { expenseResource } from '../resources/expense.resources';
 
 const route = Router();
 
@@ -23,7 +24,7 @@ export default (app: Router) => {
       body: Joi.object({
         detail: Joi.string()
           .min(2)
-          .max(30)
+          .max(100)
           .required(),
         date: Joi.date()
           .required(),
@@ -36,8 +37,10 @@ export default (app: Router) => {
     middlewares.attachCurrentUser,
     async (req: Request, res: Response) => {
       const expenseService = Container.get(ExpenseService);
-      const response = await expenseService.createExpense(req.body as Expense, req.currentUser as User);
-      return res.json(response).status(201);
+      const { expense } = await expenseService.createExpense(req.body as Expense, req.currentUser as User);
+      return res.json({
+        expense: expenseResource(expense)
+      }).status(201);
     },
   );
 
@@ -51,8 +54,10 @@ export default (app: Router) => {
     middlewares.attachCurrentUser,
     async (req: Request, res: Response) => {
       const expenseService = Container.get(ExpenseService);
-      const response = await expenseService.getExpenses(req.currentUser as User);
-      return res.json(response).status(201);
+      const { expenses } = await expenseService.getExpenses(req.currentUser as User);
+      return res.json({
+        expenses: expenses.map(expense => expenseResource(expense))
+      }).status(201);
     },
   );
 };

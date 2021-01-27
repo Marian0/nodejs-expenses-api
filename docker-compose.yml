@@ -10,7 +10,7 @@ services:
     volumes:
       - "./:/src/"
       - /src/node_modules
-    command: "yarn start"
+    command: "yarn start:prod"
     depends_on:
       - postgres
     networks:

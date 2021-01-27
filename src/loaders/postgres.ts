@@ -4,6 +4,8 @@ import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConne
 import config from '../config';
 import { User } from '../models/user.model';
 
+const entitiesFolder = config.env !== 'production' ? 'build/models/*.model.ts' : 'src/models/*.model.js'
+
 export default async (): Promise<Connection> => {
   // read connection options from ormconfig file (or ENV variables)
   // const connectionOptions = await getConnectionOptions();
@@ -17,7 +19,7 @@ export default async (): Promise<Connection> => {
     synchronize: true,
     logging: true,
     entities: [
-      "src/models/*.model.ts"
+      entitiesFolder,
     ],
   };
 

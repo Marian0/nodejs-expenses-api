@@ -10,8 +10,8 @@
   "scripts": {
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\"",
-    "prestart:prod": "rimraf dist && npm run build",
-    "start:prod": "node dist/main.js",
+    "prestart:prod": "rimraf build && npm run build",
+    "start:prod": "node build/main.js",
     "start": "nodemon",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "test": "jest",

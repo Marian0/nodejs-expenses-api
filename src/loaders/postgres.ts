@@ -4,7 +4,7 @@ import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConne
 import config from '../config';
 import { User } from '../models/user.model';
 
-const entitiesFolder = config.env !== 'production' ? 'build/models/*.model.ts' : 'src/models/*.model.js'
+const entitiesFolder = config.env === 'production' ? 'build/models/*.model.js' : 'src/models/*.model.ts'
 
 export default async (): Promise<Connection> => {
   // read connection options from ormconfig file (or ENV variables)

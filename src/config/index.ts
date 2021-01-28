@@ -9,6 +9,9 @@ if (!envFound) {
 }
 
 export default {
+
+
+  env: process.env.NODE_ENV,
   /**
    *  Application port.
    */

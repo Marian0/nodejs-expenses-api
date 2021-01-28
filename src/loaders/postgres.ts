@@ -2,7 +2,9 @@ import Container from 'typedi';
 import { Connection, createConnection, useContainer } from 'typeorm';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import config from '../config';
-import { User } from '../models/user.model';
+
+//Depending on NODE_ENV changes the path to locate models
+const entitiesFolder = config.env === 'production' ? 'build/models/*.model.js' : 'src/models/*.model.ts'
 
 export default async (): Promise<Connection> => {
   // read connection options from ormconfig file (or ENV variables)
@@ -17,7 +19,7 @@ export default async (): Promise<Connection> => {
     synchronize: true,
     logging: true,
     entities: [
-      "src/models/*.model.ts"
+      entitiesFolder,
     ],
   };
 

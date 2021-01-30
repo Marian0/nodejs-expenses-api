@@ -6,7 +6,7 @@ services:
   app:
     build: .
     ports:
-      - '${APP_PORT}:${APP_PORT}'
+      - '${PORT}:${PORT}'
     volumes:
       - "./:/src/"
       - /src/node_modules

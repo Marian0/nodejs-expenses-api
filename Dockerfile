@@ -16,6 +16,6 @@ RUN yarn install
 RUN yarn build
 
 #Expose port
-EXPOSE $APP_PORT
+EXPOSE $PORT
 
 CMD ["node", "build/src/main.js"]

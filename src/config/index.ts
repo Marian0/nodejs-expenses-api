@@ -18,7 +18,7 @@ export default {
   /**
    *  Application port.
    */
-  appPort: process.env.APP_PORT,
+  appPort: process.env.PORT || 8080,
 
   /**
    * JWT Secret

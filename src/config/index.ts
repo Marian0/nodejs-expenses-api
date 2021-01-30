@@ -57,7 +57,7 @@ export default {
     /**
      * Depending on NODE_ENV changes the path to locate models
      */
-    entitiesFolder: process.env.NODE_ENV === 'production' ? 'build/models/*.model.js' : 'src/models/*.model.ts',
+    entitiesFolder: process.env.NODE_ENV === 'production' ? 'build/src/models/*.model.js' : 'src/models/*.model.ts',
   },
 
   agenda: {

@@ -14,7 +14,8 @@ export default (app: Router) => {
     async (_: Request, res: Response) => {
       return res.json({
         'description': 'Expenses API',
-        'version': packageJson.version
+        'version': packageJson.version,
+        'author': packageJson.author
       }).status(200);
     },
   );

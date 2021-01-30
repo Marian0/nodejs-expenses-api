@@ -11,7 +11,7 @@
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\"",
     "prestart:prod": "rimraf build && npm run build",
-    "start": "node build/main.js",
+    "start": "node build/src/main.js",
     "dev": "nodemon",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "test": "jest",

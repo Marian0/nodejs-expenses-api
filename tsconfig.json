@@ -22,7 +22,8 @@
         "node_modules/*",
         "src/types/*"
       ]
-    }
+    },
+    "resolveJsonModule": true
   },
   "include": [
     "src/**/*"

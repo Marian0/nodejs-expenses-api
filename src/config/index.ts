@@ -10,8 +10,11 @@ if (!envFound) {
 
 export default {
 
-
+  /**
+   *  Node environment
+   */
   env: process.env.NODE_ENV,
+
   /**
    *  Application port.
    */
@@ -47,6 +50,14 @@ export default {
      * Database name to connect to.
      */
     database: process.env.POSTGRES_DB,
+    /**
+     * Log sql to stdinout
+     */
+    databaseLogging: process.env.APP_LOG_DB === 'true',
+    /**
+     * Depending on NODE_ENV changes the path to locate models
+     */
+    entitiesFolder: process.env.NODE_ENV === 'production' ? 'build/models/*.model.js' : 'src/models/*.model.ts',
   },
 
   agenda: {

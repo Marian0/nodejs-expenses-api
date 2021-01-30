@@ -3,9 +3,6 @@ import { Connection, createConnection, useContainer } from 'typeorm';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import config from '../config';
 
-//Depending on NODE_ENV changes the path to locate models
-const entitiesFolder = config.env === 'production' ? 'build/models/*.model.js' : 'src/models/*.model.ts'
-
 export default async (): Promise<Connection> => {
   // read connection options from ormconfig file (or ENV variables)
   // const connectionOptions = await getConnectionOptions();
@@ -17,9 +14,9 @@ export default async (): Promise<Connection> => {
     password: config.database.password,
     database: config.database.database,
     synchronize: true,
-    logging: true,
+    logging: config.database.databaseLogging,
     entities: [
-      entitiesFolder,
+      config.database.entitiesFolder,
     ],
   };
 

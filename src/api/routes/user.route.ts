@@ -8,7 +8,7 @@ export default (app: Router) => {
   app.use('/users', route);
 
   /**
-   * POST users/me
+   * GET users/me
    */
   route.get(
     '/me',
